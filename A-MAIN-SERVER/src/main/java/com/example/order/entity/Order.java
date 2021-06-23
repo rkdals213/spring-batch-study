@@ -2,6 +2,7 @@ package com.example.order.entity;
 
 import com.example.generic.money.Money;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "ORDERS")
 @Getter
+@ToString(exclude = "entries")
 public class Order {
     public enum OrderStatus {ORDERED, PAYED, DELIVERED}
 

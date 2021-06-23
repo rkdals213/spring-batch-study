@@ -1,11 +1,12 @@
 package com.example.generic.money;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class Money {
+public class Money implements Serializable {
     public static final Money ZERO = Money.wons(0);
 
     private final BigDecimal amount;

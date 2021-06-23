@@ -13,17 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class InitData {
     private final InitService initService;
 
-    @PostConstruct
-    public void init() {
-        initService.init();
-    }
+//    @PostConstruct
+//    public void init() {
+//        initService.init();
+//    }
 
     @Component
     static class InitService {
@@ -65,23 +64,48 @@ public class InitData {
             em.persist(orderEntry2);
             em.persist(orderEntry3);
 
-            Order order2 = new Order(user1.getId());
-            em.persist(order2);
-            OrderEntry orderEntry4 = new OrderEntry(1, order2, product4);
-            OrderEntry orderEntry5 = new OrderEntry(1, order2, product5);
-            OrderEntry orderEntry6 = new OrderEntry(1, order2, product6);
+            for (int i = 0; i < 500; i++) {
+                Order order2 = new Order(user1.getId());
+                em.persist(order2);
+                OrderEntry orderEntry4 = new OrderEntry(1, order2, product4);
+                OrderEntry orderEntry5 = new OrderEntry(1, order2, product5);
+                OrderEntry orderEntry6 = new OrderEntry(1, order2, product6);
 
-            em.persist(orderEntry4);
-            em.persist(orderEntry5);
-            em.persist(orderEntry6);
+                em.persist(orderEntry4);
+                em.persist(orderEntry5);
+                em.persist(orderEntry6);
+            }
 
-            Order order3 = new Order(user2.getId());
-            em.persist(order3);
-            OrderEntry orderEntry7 = new OrderEntry(1, order2, product1);
-            OrderEntry orderEntry8 = new OrderEntry(1, order2, product3);
+            for (int i = 0; i < 500; i++) {
+                Order order2 = new Order(user1.getId());
+                em.persist(order2);
+                OrderEntry orderEntry4 = new OrderEntry(1, order2, product1);
+                OrderEntry orderEntry5 = new OrderEntry(1, order2, product2);
 
-            em.persist(orderEntry7);
-            em.persist(orderEntry8);
+                em.persist(orderEntry4);
+                em.persist(orderEntry5);
+            }
+
+
+            for (int i = 0; i < 500; i++) {
+                Order order3 = new Order(user2.getId());
+                em.persist(order3);
+                OrderEntry orderEntry7 = new OrderEntry(1, order3, product1);
+                OrderEntry orderEntry8 = new OrderEntry(1, order3, product3);
+
+                em.persist(orderEntry7);
+                em.persist(orderEntry8);
+            }
+
+            for (int i = 0; i < 500; i++) {
+                Order order3 = new Order(user2.getId());
+                em.persist(order3);
+                OrderEntry orderEntry7 = new OrderEntry(1, order3, product5);
+                OrderEntry orderEntry8 = new OrderEntry(1, order3, product6);
+
+                em.persist(orderEntry7);
+                em.persist(orderEntry8);
+            }
 
         }
     }
