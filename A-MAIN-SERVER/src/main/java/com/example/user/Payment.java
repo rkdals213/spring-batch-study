@@ -31,4 +31,13 @@ public class Payment implements Serializable {
         this.shopId = shopId;
         this.totalPayment = totalPayment;
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "userId=" + userId +
+                ", shopId=" + shopId +
+                ", totalPayment=" + totalPayment +
+                '}';
+    }
 }

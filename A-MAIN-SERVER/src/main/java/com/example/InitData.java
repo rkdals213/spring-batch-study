@@ -6,6 +6,7 @@ import com.example.order.entity.OrderEntry;
 import com.example.shop.entity.Product;
 import com.example.shop.entity.Shop;
 import com.example.user.User;
+import com.example.user.UserGrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +107,15 @@ public class InitData {
                 em.persist(orderEntry7);
                 em.persist(orderEntry8);
             }
+
+            UserGrade userGrade1 = new UserGrade(user1, shop1.getId(), UserGrade.Grade.C);
+            UserGrade userGrade2 = new UserGrade(user1, shop2.getId(), UserGrade.Grade.C);
+            UserGrade userGrade3 = new UserGrade(user2, shop1.getId(), UserGrade.Grade.C);
+            UserGrade userGrade4 = new UserGrade(user2, shop2.getId(), UserGrade.Grade.C);
+            em.persist(userGrade1);
+            em.persist(userGrade2);
+            em.persist(userGrade3);
+            em.persist(userGrade4);
 
         }
     }

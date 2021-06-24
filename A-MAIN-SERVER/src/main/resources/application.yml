@@ -17,7 +17,7 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create-drop
+      ddl-auto: create
   jackson:
     deserialization:
       adjust-dates-to-context-time-zone: false

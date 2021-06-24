@@ -3,6 +3,7 @@ package com.example.user;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -14,7 +15,13 @@ public class User {
     private Long id;
 
     @Column(name = "LABEL")
-    String label;
+    private String label;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true
+    )
+    private List<UserGrade> userGrades;
 
     public User() {
     }
