@@ -1,4 +1,4 @@
-package com.example.springbatchstudy.jpabatch
+package com.example.springbatchstudy.batchjobs.jpabatch
 
 import com.example.springbatchstudy.common.CustomJobListener
 import com.example.springbatchstudy.entity.Department
@@ -43,7 +43,7 @@ class JpaBatch(
     @JobScope
     fun jpaBatchStep(): Step {
         return StepBuilder("jpaBatchStep", jobRepository)
-            .chunk<Department, Department>(10, transactionManager)
+            .chunk<Department, Department>(chunkSize, transactionManager)
             .listener(customStepListener)
             .reader(jpaBatchReader())
             .writer(jpaBatchWriter())
@@ -66,5 +66,9 @@ class JpaBatch(
         return ItemWriter { list: Chunk<out Department> ->
             list.forEach { logger.info(it.toString()) }
         }
+    }
+
+    companion object {
+        const val chunkSize = 3
     }
 }
