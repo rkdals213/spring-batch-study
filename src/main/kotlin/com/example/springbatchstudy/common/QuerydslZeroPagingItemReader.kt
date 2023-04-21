@@ -12,14 +12,14 @@ open class QuerydslZeroPagingItemReader<T>(
 ) : QuerydslPagingItemReader<T>(entityManagerFactory, transacted, pageSize, queryFunction) {
 
     override fun doReadPage() {
-        clearIfTransacted()
+        val tx = getTxOrNull()
 
         val query = createQuery()
             .offset(0)
             .limit(pageSize.toLong())
 
         initResults()
-        fetchQuery(query)
+        fetchQuery(query, tx)
     }
 
 }

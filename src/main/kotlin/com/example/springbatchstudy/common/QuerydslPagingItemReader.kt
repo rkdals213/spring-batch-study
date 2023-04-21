@@ -4,9 +4,9 @@ import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityManagerFactory
+import jakarta.persistence.EntityTransaction
 import org.springframework.batch.item.database.AbstractPagingItemReader
 import org.springframework.util.ClassUtils
-import org.springframework.util.CollectionUtils
 import java.util.concurrent.CopyOnWriteArrayList
 
 
@@ -32,18 +32,23 @@ open class QuerydslPagingItemReader<T>(
     }
 
     override fun doReadPage() {
-        clearIfTransacted()
+        val tx = getTxOrNull()
         val query = createQuery()
             .offset((page * pageSize).toLong())
             .limit(pageSize.toLong())
         initResults()
-        fetchQuery(query)
+        fetchQuery(query, tx)
     }
 
-    fun clearIfTransacted() {
+    protected open fun getTxOrNull(): EntityTransaction? {
         if (transacted) {
+            val tx = entityManager.transaction
+            tx.begin()
+            entityManager.flush()
             entityManager.clear()
+            return tx
         }
+        return null
     }
 
     fun createQuery(): JPAQuery<T> {
@@ -52,22 +57,23 @@ open class QuerydslPagingItemReader<T>(
     }
 
     fun initResults() {
-        if (CollectionUtils.isEmpty(results)) {
+        if (results.isNullOrEmpty()) {
             results = CopyOnWriteArrayList()
         } else {
             results.clear()
         }
     }
 
-    fun fetchQuery(query: JPAQuery<T>) {
-        if (!transacted) {
+    fun fetchQuery(query: JPAQuery<T>, tx: EntityTransaction?) {
+        if (transacted) {
+            results.addAll(query.fetch())
+            tx?.commit()
+        } else {
             val queryResult = query.fetch()
             for (entity in queryResult) {
                 entityManager.detach(entity)
                 results.add(entity)
             }
-        } else {
-            results.addAll(query.fetch())
         }
     }
 
